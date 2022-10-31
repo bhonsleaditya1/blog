@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <link href="assets/img/favicon.ico" rel="icon">
+    <title>My Personal Blog</title>
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i"
+          rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/mediumish.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Begin Nav
+================================================== -->
+<nav class="navbar navbar-toggleable-md navbar-light bg-white fixed-top mediumnavigation">
+    <button aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler navbar-toggler-right" data-target="#navbarsExampleDefault" data-toggle="collapse"
+            type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container">
+        <!-- Begin Logo -->
+        <a class="navbar-brand" href="index.html">
+            <img alt="logo" src="assets/img/logo.png">
+        </a>
+        <!-- End Logo -->
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <!-- Begin Menu -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Stories <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="author.html">Author</a>
+                </li>
+            </ul>
+            <!-- End Menu -->
+            <!-- Begin Search -->
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" placeholder="Search" type="text">
+                <span class="search-icon"><svg class="svgIcon-use" height="25" viewbox="0 0 25 25" width="25"><path
+                        d="M20.067 18.933l-4.157-4.157a6 6 0 1 0-.884.884l4.157 4.157a.624.624 0 1 0 .884-.884zM6.5 11c0-2.62 2.13-4.75 4.75-4.75S16 8.38 16 11s-2.13 4.75-4.75 4.75S6.5 13.62 6.5 11z"></path></svg></span>
+            </form>
+            <!-- End Search -->
+        </div>
+    </div>
+</nav>
+<!-- End Nav
+================================================== -->
+
+<!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Begin Post -->
+        <div class="col-md-8 col-md-offset-2 col-xs-12">
+            <div class="mainheading">
+
+                <!-- Begin Top Meta -->
+                <div class="row post-top-meta">
+                    <div class="col-md-2">
+                        <a href="author.html"><img alt="Aditya Bhonsle" class="author-thumb"
+                                                   src="assets/img/logo/pen-writing.jpg"></a>
+                    </div>
+                    <div class="col-md-10">
+                        <a class="link-dark" href="author.html">Aditya Bhonsle</a>
+                        <span class="author-description">Author</span><br/>
+                        <span class="post-date">15 October 2022</span><span class="dot"></span><span class="post-read">6 min read</span>
+                    </div>
+                </div>
+                <!-- End Top Menta -->
+
+                <h1 class="posttitle">Backend Perspective On Building Analytics Service</h1>
+
+            </div>
+
+            <!-- Begin Featured Image -->
+            <img alt="" class="featured-image img-fluid" src="assets/img/demopic/10.jpg">
+            <!-- End Featured Image -->
+
+            <!-- Begin Post Content -->
+            <div class="article-post">
+                <p>I am going to cover different approaches that could be used for building an Analytics Service.
+                    I'll also be covering their benefits & drawbacks.</p>
+                <h3>General </h3>
+                <p>Approach should be future-proof, since it could be quite tricky to change approach once it's live
+                    (Data Migration, Down Time, etc.). Extra care and though should be provided, so it could withstand
+                    high-throughput. Maintaining correctness of generated metrics could become critical since business
+                    decisions might depend on it.</p>
+                <h3>Factors to Consider</h3>
+                <ol>
+                    <li>Data Sources: How many Internal services would be pushing data?</li>
+                    <li>Event Generators: Complexity and Types of Events generated by Data Sources</li>
+                    <li>Metrics: Computation Complexity from base values</li>
+                    <li>Correctness: Pace of Data might put Service in backlog and risk validity of Metric</li>
+                </ol>
+                <h3>High-Level Approaches for Service</h3>
+                <ul>
+                    <li>Database: RDBMS</li>
+                    <li>ElasticSearch Client: Custom ES Queries</li>
+                    <li>Custom Microservice</li>
+                </ul>
+
+                <h3>Database for Generating Analytics</h3>
+                <p>Database is used to store generated events. Further these events could be aggregated upon
+                    using native SQL queries in RDBMS. Might suit Monolith scenario where everything is stored into
+                    single DB. Without additional infrastructure and skill set, analytics module could be offloaded to
+                    DBMS using SQL queries.</p>
+                <ol>
+                    <li>Multiple Data Sources need to eventually write to Database</li>
+                    <li>Mainly structured data could be part of it</li>
+                    <li>Complex metrics could required complex joins</li>
+                    <li>As long as DB Node has enough Computation Capacity</li>
+                </ol>
+                <h4>Benefits</h4>
+                <ul>
+                    <li>Ideal for small throughput</li>
+                    <li>Cost Effective: No additional Infra or Setup</li>
+                    <li>Easy to Maintain</li>
+                    <li>Performance degradation: Event list grows</li>
+                </ul>
+                <h4>Drawbacks</h4>
+                <ul>
+                    <li>Additional Load on DB</li>
+                    <li>Performance degradation: Events grow</li>
+                    <li>Hard to Scale</li>
+                </ul>
+
+                <h3>ElasticSearch for Generating Analytics</h3>
+                <p>ElasticSearch forms the basis for this approach. It is very popular and powerful platform for
+                    generating analytics mertics. Database might still be used to store generated events but needs to be
+                    ingested to ElasticSearch mainly from Logstash. ElasticSearch offers many functions out-of-the-box
+                    that can be applied on document, for easy metric calculation.</p>
+                <ul>
+                    <li>Should be Ingested with Logstash or Beats</li>
+                    <li>Document based Storage</li>
+                    <li>Complex Metrics might be hard to achieve (Joins are not Supported)</li>
+                    <li>As long as load is maintainable</li>
+                </ul>
+                <h4>Benefits</h4>
+                <ul>
+                    <li>Easy to build Metrics</li>
+                    <li>Built for Analytics Engine</li>
+                    <li>Performance Boost</li>
+                </ul>
+                <h4>Drawbacks</h4>
+                <ul>
+                    <li>Setup, Infra & Eventually Cost</li>
+                    <li>Skill-set & Effort to maintain</li>
+                    <li>Index Limit: Data pooling for keeping the number low</li>
+                    <li>Join-based metrics</li>
+                </ul>
+
+                <h3>Microservice for Generating Analytics</h3>
+                <p>Custom Microservice built out from complex metrics which might be hard to implement with existing
+                    solutions. Could utilise advancement of technology and/or method not used elsewhere which could
+                    provide additional performance boost.</p>
+                <ol>
+                    <li>Could be integrated as long as they follow same format</li>
+                    <li>Limitations imposed by Storage format used</li>
+                    <li>Might not be an issue as long as it can be implemented</li>
+                    <li>High data throughput might keep it out of sync, and it might provide stale results</li>
+                </ol>
+                <h4>Benefits</h4>
+                <ul>
+                    <li>Implement Complex metrics</li>
+                    <li>Easy to Scale (Horizontally)</li>
+                    <li>Could build Highly Optimised Service (Niche Implementation)</li>
+                    <li>Advantages of Architecture & Technology used</li>
+                </ul>
+                <h4>Drawbacks</h4>
+                <ul>
+                    <li>Hard to build</li>
+                    <li>High Skill set & Effort to maintain</li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Post Content -->
+
+        <!-- Begin Tags -->
+        <div class="after-post-tags">
+            <ul class="tags">
+                <li><a href="#">System Design</a></li>
+                <li><a href="#">Scalability</a></li>
+                <li><a href="#">Microservice</a></li>
+            </ul>
+        </div>
+        <!-- End Tags -->
+
+    </div>
+    <!-- End Post -->
+
+</div>
+</div>
+<!-- End Article
+================================================== -->
+
+<div class="hideshare"></div>
+
+
+<!-- Begin Footer
+================================================== -->
+<div class="container">
+    <div class="footer">
+        <p class="pull-left">
+            Copyright &copy; 2022 Aditya Bhonsle
+        </p>
+        <p class="pull-right">
+            Mediumish Theme taken from <a href="https://www.wowthemes.net" target="_blank">WowThemes.net</a>
+        </p>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+<!-- End Footer
+================================================== -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="assets/js/jquery.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="assets/js/mediumish.js"></script>
+</body>
+</html>
